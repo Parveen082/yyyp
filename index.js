@@ -48,17 +48,17 @@ app.use(express.json());
 app.use(authorize); 
 app.use(enforceJson); 
 
-// Define Schema & Model (Only `mobile` is unique)
+
 const ProductSchema = new mongoose.Schema({
-    mobile: { type: String, required: true, unique: true },  // Only `mobile` is unique
+    mobile: { type: String, required: true, unique: true }, 
     name: { type: String, required: true },
     dob: { type: String, required: true },
-    email: { type: String, required: true },   // Email allows duplicates
+    email: { type: String, required: true },  
     employeeType: { type: String, required: true },
-    pancard: { type: String, required: true }  // PAN card allows duplicates
+    pancard: { type: String, required: true }  
 }, { strict: false });
 
-const Product = mongoose.models.Product || mongoose.model('zyp', ProductSchema);
+const Product = mongoose.models.Product || mongoose.model('zyps', ProductSchema);
 
 // Handle duplicate mobile errors
 ProductSchema.post('save', function (error, doc, next) {
@@ -83,12 +83,12 @@ app.post('/products', async (req, res) => {
         }
 
         const product = await Product.create(req.body);
-        res.status(201).json({ message: "✅ lead created", product });
+        res.status(201).json({ message: "✅ zypp lead created", product });
     } catch (error) {
         if (error.code === 11000) {
             return res.status(400).json({ message: "❌ Duplicate key error", error });
         }
-        res.status(500).json({ message: "❌ Error creating lead", error: error.message });
+        res.status(500).json({ message: "❌ Error creating zypp lead", error: error.message });
     }
 });
 
